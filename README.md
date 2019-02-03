@@ -19,7 +19,7 @@ Building and using requires the following libraries and programs
 
     Pytorch 0.3.1
     CUDA 9.0
-    python 3.5.4
+    python 3.6.4
     scipy
     argparse
     tensorboardX
@@ -28,9 +28,30 @@ Building and using requires the following libraries and programs
     
 The versions match the configuration we have tested on an ubuntu 16.04 system.
 
+## Training Data Praparation 
+
+Training data preparation requires the following libraries and programs
+
+    opencv
+    imageio
+    joblib
+    h5py
+    lz4
+    
+1. Download DeMoN data (https://github.com/lmb-freiburg/demon)
+2. Convert data
+
+```
+python ./dataset/preparation/download_training_datasets.py
+python ./dataset/preparation/preparedata.py
+```
 
 ## Train
-python3 train.py $datapath --mindepth 0.5 --nlabel 64 --log-output
+```
+python3 train.py ./dataset/train/ --mindepth 0.5 --nlabel 64 --log-output
+```
 
 ## Test
-python3 test.py $datapath --output-print --sequence-length 2 --ttype test.txt --pretrained-dps pretrained/dpsnet.pth.tar
+```
+python3 test.py ./dataset/test/ --sequence-length 2 --ttype test.txt --output-print --pretrained-dps pretrained/dpsnet.pth.tar
+```
