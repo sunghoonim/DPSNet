@@ -41,14 +41,14 @@ Training data preparation requires the following libraries and programs
 1. Download DeMoN data (https://github.com/lmb-freiburg/demon)
 2. Convert data
 
-<Training data>
+[Training data]
     
 ```
 bash download_traindata.sh
 python ./dataset/preparation/preparedata_train.py
 ```
 
-<Test data>
+[Test data]
     
 ```
 bash download_testdata.sh
