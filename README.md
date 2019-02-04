@@ -42,12 +42,14 @@ Training data preparation requires the following libraries and programs
 2. Convert data
 
 <Training data>
+    
 ```
 bash download_traindata.sh
 python ./dataset/preparation/preparedata_train.py
 ```
 
 <Test data>
+    
 ```
 bash download_testdata.sh
 python ./dataset/preparation/preparedata_test.py
