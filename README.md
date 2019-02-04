@@ -28,7 +28,7 @@ Building and using requires the following libraries and programs
     
 The versions match the configuration we have tested on an ubuntu 16.04 system.
 
-## Training Data Praparation 
+## Data Praparation 
 
 Training data preparation requires the following libraries and programs
 
@@ -41,11 +41,18 @@ Training data preparation requires the following libraries and programs
 1. Download DeMoN data (https://github.com/lmb-freiburg/demon)
 2. Convert data
 
+<Training data>
 ```
-python ./dataset/preparation/download_training_datasets.py
-python ./dataset/preparation/preparedata.py
+bash download_traindata.sh
+python ./dataset/preparation/preparedata_train.py
 ```
 
+<Test data>
+```
+bash download_testdata.sh
+python ./dataset/preparation/preparedata_test.py
+```
+    
 ## Train
 ```
 python3 train.py ./dataset/train/ --mindepth 0.5 --nlabel 64 --log-output
