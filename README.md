@@ -57,10 +57,10 @@ python ./dataset/preparation/preparedata_test.py
     
 ## Train
 ```
-python3 train.py ./dataset/train/ --mindepth 0.5 --nlabel 64 --log-output
+python train.py ./dataset/train/ --mindepth 0.5 --nlabel 64 --log-output
 ```
 
 ## Test
 ```
-python3 test.py ./dataset/test/ --sequence-length 2 --ttype test.txt --output-print --pretrained-dps pretrained/dpsnet.pth.tar
+python test.py ./dataset/test/ --sequence-length 2 --output-print --pretrained-dps ./pretrained/dpsnet.pth.tar
 ```
