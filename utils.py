@@ -35,10 +35,10 @@ def tensor2array(tensor, max_value=255, colormap='rainbow'):
     if tensor.ndimension() == 2 or tensor.size(0) == 1:
         try:
             import cv2
-            if cv2.__version__.startswith('3'):
-                color_cvt = cv2.COLOR_BGR2RGB
-            else:  # 2.4
+            if cv2.__version__.startswith('2'): # 2.4
                 color_cvt = cv2.cv.CV_BGR2RGB
+            else:  
+                color_cvt = cv2.COLOR_BGR2RGB
             if colormap == 'rainbow':
                 colormap = cv2.COLORMAP_RAINBOW
             elif colormap == 'bone':
