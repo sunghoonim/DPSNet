@@ -1,0 +1,4 @@
+dataset/test/*
+*.pyc
+__pycache__/*
+dataset/preparation/testdata/*
