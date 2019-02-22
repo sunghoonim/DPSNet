@@ -39,7 +39,7 @@ parser.add_argument('--output-dir', default='result', type=str, help='Output dir
 parser.add_argument('--ttype', default='test.txt', type=str, help='Text file indicates input data')
 parser.add_argument('--nlabel', type=int ,default=64, help='number of label')
 parser.add_argument('--mindepth', type=float ,default=0.5, help='minimum depth')
-parser.add_argument('--maxdepth', type=float ,default=10, help='minimum depth')
+parser.add_argument('--maxdepth', type=float ,default=10, help='maximum depth')
 parser.add_argument('--output-print', action='store_true', help='print output depth')
 parser.add_argument('--print-freq', default=1, type=int,
                     metavar='N', help='print frequency')
