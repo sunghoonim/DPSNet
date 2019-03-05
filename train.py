@@ -273,45 +273,46 @@ def validate_with_gt(args, val_loader, dpsnet, epoch, output_writers=[]):
     dpsnet.eval()
 
     end = time.time()
-    for i, (tgt_img, ref_imgs, ref_poses, intrinsics, intrinsics_inv, tgt_depth) in enumerate(val_loader):
-        tgt_img_var = Variable(tgt_img.cuda(), volatile=True)
-        ref_imgs_var = [Variable(img.cuda(), volatile=True) for img in ref_imgs]
-        ref_poses_var = [Variable(pose.cuda(), volatile=True) for pose in ref_poses]
-        intrinsics_var = Variable(intrinsics.cuda(), volatile=True)
-        intrinsics_inv_var = Variable(intrinsics_inv.cuda(), volatile=True)
-        tgt_depth_var = Variable(tgt_depth.cuda(), volatile=True)
+    with torch.no_grad():
+        for i, (tgt_img, ref_imgs, ref_poses, intrinsics, intrinsics_inv, tgt_depth) in enumerate(val_loader):
+            tgt_img_var = Variable(tgt_img.cuda())
+            ref_imgs_var = [Variable(img.cuda()) for img in ref_imgs]
+            ref_poses_var = [Variable(pose.cuda()) for pose in ref_poses]
+            intrinsics_var = Variable(intrinsics.cuda())
+            intrinsics_inv_var = Variable(intrinsics_inv.cuda())
+            tgt_depth_var = Variable(tgt_depth.cuda())
 
-        pose = torch.cat(ref_poses_var,1)
+            pose = torch.cat(ref_poses_var,1)
 
-        output_depth = dpsnet(tgt_img_var, ref_imgs_var, pose, intrinsics_var, intrinsics_inv_var)
-        output_disp = args.nlabel*args.mindepth/(output_depth)
+            output_depth = dpsnet(tgt_img_var, ref_imgs_var, pose, intrinsics_var, intrinsics_inv_var)
+            output_disp = args.nlabel*args.mindepth/(output_depth)
 
-        mask = (tgt_depth <= args.nlabel*args.mindepth) & (tgt_depth >= args.mindepth) & (tgt_depth == tgt_depth)
+            mask = (tgt_depth <= args.nlabel*args.mindepth) & (tgt_depth >= args.mindepth) & (tgt_depth == tgt_depth)
 
-        output = torch.squeeze(output_depth.data.cpu(),1)
+            output = torch.squeeze(output_depth.data.cpu(),1)
 
-        if log_outputs and i % 100 == 0 and i/100 < len(output_writers):
-            index = int(i//100)
-            if epoch == 0:
-                output_writers[index].add_image('val Input', tensor2array(tgt_img[0]), 0)
-                depth_to_show = tgt_depth_var.data[0].cpu()
-                depth_to_show[depth_to_show > args.nlabel*args.mindepth] = args.nlabel*args.mindepth
-                disp_to_show = (args.nlabel*args.mindepth/depth_to_show)
-                disp_to_show[disp_to_show > args.nlabel] = 0
+            if log_outputs and i % 100 == 0 and i/100 < len(output_writers):
+                index = int(i//100)
+                if epoch == 0:
+                    output_writers[index].add_image('val Input', tensor2array(tgt_img[0]), 0)
+                    depth_to_show = tgt_depth_var.data[0].cpu()
+                    depth_to_show[depth_to_show > args.nlabel*args.mindepth] = args.nlabel*args.mindepth
+                    disp_to_show = (args.nlabel*args.mindepth/depth_to_show)
+                    disp_to_show[disp_to_show > args.nlabel] = 0
 
-                output_writers[index].add_image('val target Disparity Normalized', tensor2array(disp_to_show, max_value=args.nlabel, colormap='bone'), epoch)
-                output_writers[index].add_image('val target Depth Normalized', tensor2array(depth_to_show, max_value=args.nlabel*args.mindepth*0.3), epoch)
+                    output_writers[index].add_image('val target Disparity Normalized', tensor2array(disp_to_show, max_value=args.nlabel, colormap='bone'), epoch)
+                    output_writers[index].add_image('val target Depth Normalized', tensor2array(depth_to_show, max_value=args.nlabel*args.mindepth*0.3), epoch)
 
-            output_writers[index].add_image('val Dispnet Output Normalized', tensor2array(output_disp.data[0].cpu(), max_value=args.nlabel, colormap='bone'), epoch)
-            output_writers[index].add_image('val Depth Output', tensor2array(output_depth.data[0].cpu(), max_value=args.nlabel*args.mindepth*0.3), epoch)
+                output_writers[index].add_image('val Dispnet Output Normalized', tensor2array(output_disp.data[0].cpu(), max_value=args.nlabel, colormap='bone'), epoch)
+                output_writers[index].add_image('val Depth Output', tensor2array(output_depth.data[0].cpu(), max_value=args.nlabel*args.mindepth*0.3), epoch)
 
-        errors.update(compute_errors_train(tgt_depth, output, mask))
+            errors.update(compute_errors_train(tgt_depth, output, mask))
 
-        # measure elapsed time
-        batch_time.update(time.time() - end)
-        end = time.time()
-        if i % args.print_freq == 0:
-            print('valid: Time {} Abs Error {:.4f} ({:.4f})'.format(batch_time, errors.val[0], errors.avg[0]))
+            # measure elapsed time
+            batch_time.update(time.time() - end)
+            end = time.time()
+            if i % args.print_freq == 0:
+                print('valid: Time {} Abs Error {:.4f} ({:.4f})'.format(batch_time, errors.val[0], errors.avg[0]))
 
     return errors.avg, error_names
 

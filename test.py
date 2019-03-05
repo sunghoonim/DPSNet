@@ -74,39 +74,40 @@ def main():
         os.mkdir(output_dir)
 
     errors = np.zeros((2, 8, int(len(val_loader)/args.print_freq)+1), np.float32)
-    for ii, (tgt_img, ref_imgs, ref_poses, intrinsics, intrinsics_inv, tgt_depth) in enumerate(val_loader):
-        if ii % args.print_freq == 0:
-            i = int(ii / args.print_freq)
-            tgt_img_var = Variable(tgt_img.cuda(), volatile=True)
-            ref_imgs_var = [Variable(img.cuda(), volatile=True) for img in ref_imgs]
-            ref_poses_var = [Variable(pose.cuda(), volatile=True) for pose in ref_poses]
-            intrinsics_var = Variable(intrinsics.cuda(), volatile=True)
-            intrinsics_inv_var = Variable(intrinsics_inv.cuda(), volatile=True)
-            tgt_depth_var = Variable(tgt_depth.cuda(), volatile=True)
+    with torch.no_grad():
+        for ii, (tgt_img, ref_imgs, ref_poses, intrinsics, intrinsics_inv, tgt_depth) in enumerate(val_loader):
+            if ii % args.print_freq == 0:
+                i = int(ii / args.print_freq)
+                tgt_img_var = Variable(tgt_img.cuda())
+                ref_imgs_var = [Variable(img.cuda()) for img in ref_imgs]
+                ref_poses_var = [Variable(pose.cuda()) for pose in ref_poses]
+                intrinsics_var = Variable(intrinsics.cuda())
+                intrinsics_inv_var = Variable(intrinsics_inv.cuda())
+                tgt_depth_var = Variable(tgt_depth.cuda())
 
-            # compute output
-            pose = torch.cat(ref_poses_var,1)
-            start = time.time()
-            output_depth = dpsnet(tgt_img_var, ref_imgs_var, pose, intrinsics_var, intrinsics_inv_var)
-            elps = time.time() - start
-            tgt_disp = args.mindepth*args.nlabel/tgt_depth
-            output_disp = args.mindepth*args.nlabel/output_depth
+                # compute output
+                pose = torch.cat(ref_poses_var,1)
+                start = time.time()
+                output_depth = dpsnet(tgt_img_var, ref_imgs_var, pose, intrinsics_var, intrinsics_inv_var)
+                elps = time.time() - start
+                tgt_disp = args.mindepth*args.nlabel/tgt_depth
+                output_disp = args.mindepth*args.nlabel/output_depth
 
-            mask = (tgt_depth <= args.maxdepth) & (tgt_depth >= args.mindepth) & (tgt_depth == tgt_depth)
+                mask = (tgt_depth <= args.maxdepth) & (tgt_depth >= args.mindepth) & (tgt_depth == tgt_depth)
 
-            output_disp_ = torch.squeeze(output_disp.data.cpu(),1)
-            output_depth_ = torch.squeeze(output_depth.data.cpu(),1)
+                output_disp_ = torch.squeeze(output_disp.data.cpu(),1)
+                output_depth_ = torch.squeeze(output_depth.data.cpu(),1)
 
-            errors[0,:,i] = compute_errors_test(tgt_depth[mask], output_depth_[mask])
-            errors[1,:,i] = compute_errors_test(tgt_disp[mask], output_disp_[mask])
+                errors[0,:,i] = compute_errors_test(tgt_depth[mask], output_depth_[mask])
+                errors[1,:,i] = compute_errors_test(tgt_disp[mask], output_disp_[mask])
 
-            print('Elapsed Time {} Abs Error {:.4f}'.format(elps, errors[0,0,i]))
+                print('Elapsed Time {} Abs Error {:.4f}'.format(elps, errors[0,0,i]))
 
-            if args.output_print:
-                output_disp_n = (output_disp_).numpy()[0]
-                np.save(output_dir/'{:04d}{}'.format(i,'.npy'), output_disp_n)
-                disp = (255*tensor2array(torch.from_numpy(output_disp_n), max_value=args.nlabel, colormap='bone')).astype(np.uint8)
-                imsave(output_dir/'{:04d}_disp{}'.format(i,'.png'), disp)
+                if args.output_print:
+                    output_disp_n = (output_disp_).numpy()[0]
+                    np.save(output_dir/'{:04d}{}'.format(i,'.npy'), output_disp_n)
+                    disp = (255*tensor2array(torch.from_numpy(output_disp_n), max_value=args.nlabel, colormap='bone')).astype(np.uint8)
+                    imsave(output_dir/'{:04d}_disp{}'.format(i,'.png'), disp)
 
 
     mean_errors = errors.mean(2)
