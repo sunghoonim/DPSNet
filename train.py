@@ -213,7 +213,7 @@ def train(args, train_loader, dpsnet, optimizer, epoch_size, train_writer):
             loss += F.smooth_l1_loss(output[mask], tgt_depth_var[mask], size_average=True) * pow(0.7, len(depths)-l-1)
 
         if i > 0 and n_iter % args.print_freq == 0:
-            train_writer.add_scalar('total_loss', loss.data[0], n_iter)
+            train_writer.add_scalar('total_loss', loss.item(), n_iter)
 
         if args.training_output_freq > 0 and n_iter % args.training_output_freq == 0:
 
