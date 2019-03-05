@@ -17,7 +17,7 @@ Please contact Sunghoon Im (sunghoonim27@gmail.com) if you have any questions.
 
 Building and using requires the following libraries and programs
 
-    Pytorch 0.3.1
+    Pytorch (>= 0.4.0) (The code for < 0.4.0 is in the other brach)
     CUDA 9.0
     python 3.6.4
     scipy
