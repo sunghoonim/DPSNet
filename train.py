@@ -239,7 +239,7 @@ def train(args, train_loader, dpsnet, optimizer, epoch_size, train_writer):
                                        n_iter)
 
         # record loss and EPE
-        losses.update(loss.data[0], args.batch_size)
+        losses.update(loss.item(), args.batch_size)
 
         # compute gradient and do Adam step
         optimizer.zero_grad()
@@ -252,7 +252,7 @@ def train(args, train_loader, dpsnet, optimizer, epoch_size, train_writer):
 
         with open(args.save_path/args.log_full, 'a') as csvfile:
             writer = csv.writer(csvfile, delimiter='\t')
-            writer.writerow([loss.data[0]])
+            writer.writerow([loss.item()])
         if i % args.print_freq == 0:
             print('Train: Time {} Data {} Loss {}'.format(batch_time, data_time, losses))
         if i >= epoch_size - 1:
