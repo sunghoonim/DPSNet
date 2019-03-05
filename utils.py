@@ -46,14 +46,15 @@ def tensor2array(tensor, max_value=255, colormap='rainbow'):
             array = (255*tensor.squeeze().numpy()/max_value).clip(0, 255).astype(np.uint8)
             colored_array = cv2.applyColorMap(array, colormap)
             array = cv2.cvtColor(colored_array, color_cvt).astype(np.float32)/255
+            array = array.transpose(2, 0, 1)
         except ImportError:
             if tensor.ndimension() == 2:
                 tensor.unsqueeze_(2)
             array = (tensor.expand(tensor.size(0), tensor.size(1), 3).numpy()/max_value).clip(0,1)
 
     elif tensor.ndimension() == 3:
-        assert(tensor.size(0) == 3)
-        array = 0.5 + tensor.numpy().transpose(1, 2, 0)*0.5
+        #assert(tensor.size(0) == 3)
+        array = 0.5 + tensor.numpy()*0.5
     return array
 
 
