@@ -70,7 +70,7 @@ python test.py ./dataset/test/ --sequence-length 2 --output-print --pretrained-d
 Paper (epoch 4) -> Update (epoch 10)
 
 MVS    A.Rel  A.diff Sq.Rel  RMSE  R. log   a=1    a=2    a=3
-Paper  0.0722 0.2095 0.0798 0.4928 0.1527 0.8930 0.9502 0.9760
+Paper  **0.0722** 0.2095 0.0798 0.4928 0.1527 0.8930 0.9502 0.9760
 Update 0.0813 0.2006 0.0971 0.4419 0.1595 0.8853 0.9454 0.9735
 
 SUN3D  A.Rel  A.diff Sq.Rel  RMSE  R. log   a=1    a=2    a=3
