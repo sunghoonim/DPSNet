@@ -65,8 +65,9 @@ python train.py ./dataset/train/ --mindepth 0.5 --nlabel 64 --log-output
 python test.py ./dataset/test/ --sequence-length 2 --output-print --pretrained-dps ./pretrained/dpsnet.pth.tar
 ```
 
-## Updated result for Table 1 (Epoch 4 -> Epoch 10)
+## Updated result for Table 1 (Paper (epoch 4) -> Update (epoch 10))
 ```
+       A.Rel  A.diff Sq.Rel  RMSE  R. log   a=1    a=2    a=3
 MVS 
 Paper  0.0722 0.2095 0.0798 0.4928 0.1527 0.8930 0.9502 0.9760
 Update 0.0813 0.2006 0.0971 0.4419 0.1595 0.8853 0.9454 0.9735
