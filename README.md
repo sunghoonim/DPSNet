@@ -69,20 +69,19 @@ python test.py ./dataset/test/ --sequence-length 2 --output-print --pretrained-d
 ```
 Paper (epoch 4) -> Update (epoch 10)
 
-       A.Rel  A.diff Sq.Rel  RMSE  R. log   a=1    a=2    a=3
-MVS 
+MVS    A.Rel  A.diff Sq.Rel  RMSE  R. log   a=1    a=2    a=3
 Paper  0.0722 0.2095 0.0798 0.4928 0.1527 0.8930 0.9502 0.9760
 Update 0.0813 0.2006 0.0971 0.4419 0.1595 0.8853 0.9454 0.9735
 
-SUN3D
+SUN3D  A.Rel  A.diff Sq.Rel  RMSE  R. log   a=1    a=2    a=3
 Paper  0.1470 0.3234 0.1071 0.4269 0.1906 0.7892 0.9317 0.9672
 Update 0.1469 0.3355 0.1165 0.4489 0.1956 0.7812 0.9260 0.9728
 
-RGBD
+RGBD   A.Rel  A.diff Sq.Rel  RMSE  R. log   a=1    a=2    a=3
 Paper  0.1538 0.5235 0.2149 0.7226 0.2263 0.7842 0.8959 0.9402
 Update 0.1508 0.5312 0.2514 0.6952 0.2421 0.8041 0.8948 0.9268
 
-Scenes11
+Scenes A.Rel  A.diff Sq.Rel  RMSE  R. log   a=1    a=2    a=3
 Paper  0.0558 0.2430 0.1435 0.7136 0.1396 0.9502 0.9726 0.9804
 Update 0.0500 0.1515 0.1108 0.4661 0.1164 0.9614 0.9824 0.9880
 ```
