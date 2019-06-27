@@ -65,6 +65,13 @@ python train.py ./dataset/train/ --mindepth 0.5 --nlabel 64 --log-output
 python test.py ./dataset/test/ --sequence-length 2 --output-print --pretrained-dps ./pretrained/dpsnet.pth.tar
 ```
 
+## Test (ETH3D)
+./dataset/ETH3D/ folder includes gt_cam
+Download ETH3D dataset from https://phuang17.github.io/DeepMVS/index.html into the ./dataset/ETH3D/ folder
+```
+python test_ETH3D.py ./dataset/ETH3D/ --sequence-length 2 --output-print --pretrained-dps ./pretrained/dpsnet.pth.tar
+```
+
 ## Updated result for Table 1
 ```
 Paper (epoch 4) -> Update (epoch 10)
