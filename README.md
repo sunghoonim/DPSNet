@@ -66,8 +66,8 @@ python test.py ./dataset/test/ --sequence-length 2 --output-print --pretrained-d
 ```
 
 ## Test (ETH3D)
-./dataset/ETH3D/ folder includes gt_cam
-Download ETH3D dataset from https://phuang17.github.io/DeepMVS/index.html into the ./dataset/ETH3D/ folder
+./dataset/ETH3D_results/ folder includes gt_cam
+Download ETH3D dataset from https://phuang17.github.io/DeepMVS/index.html and merge it with ./dataset/ETH3D_results/ folder
 ```
 python test_ETH3D.py ./dataset/ETH3D/ --sequence-length 2 --output-print --pretrained-dps ./pretrained/dpsnet.pth.tar
 ```
