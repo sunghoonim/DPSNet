@@ -73,7 +73,7 @@ def main():
     if not os.path.isdir(output_dir):
         os.mkdir(output_dir)
 
-    errors = np.zeros((2, 8, int(len(val_loader)/args.print_freq)+1), np.float32)
+    errors = np.zeros((2, 8, int(np.ceil(len(val_loader)/args.print_freq))), np.float32)
     with torch.no_grad():
         for ii, (tgt_img, ref_imgs, ref_poses, intrinsics, intrinsics_inv, tgt_depth) in enumerate(val_loader):
             if ii % args.print_freq == 0:
