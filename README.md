@@ -24,6 +24,7 @@ Building and using requires the following libraries and programs
     argparse
     tensorboardX
     progressbar2
+    blessings
     path.py
     
 The versions match the configuration we have tested on an ubuntu 16.04 system.
